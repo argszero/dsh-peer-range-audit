@@ -1,0 +1,42 @@
+# The @argszero/dsh-peer-range-audit bundle patch: mount and go.
+#
+# A `peerDependencies` entry naming `@deepseek-ai/dsh-*` is read by two readers
+# and they do not agree. `@deepseek-ai/dsh-app-boot` judges every plugin's dsh
+# peers before the tree mounts, and it calls semver with
+# `{ includePrerelease: true }` — so a prerelease runtime satisfies a range that
+# names a prerelease *floor* even when the prerelease's own `major.minor.patch`
+# tuple never appears in the range. Plain semver, which is what npm's own
+# resolver runs, refuses that same combination. The divergence is one-way and
+# silent: inside a profile a range is satisfied, while the next `npm install` of
+# a dev checkout refuses it — and nothing in the project says so, because the
+# gate only ever answers yes/no about the version it is running as.
+#
+# This patch mounts one read-only tool, `peer_range_audit`, and changes nothing
+# else. Called with no arguments inside a profile it audits the dsh peer ranges
+# of the plugins that profile mounts; pass `manifests` (parsed package.json
+# objects) or `requirements` (bare ranges) for anything else, and `versions`
+# (for example from `npm view @deepseek-ai/dsh-agent versions --json`) to test a
+# ladder instead of the running version alone. For each declared range it prints
+# the set the gate admits, the set plain semver admits, the divergence, and
+# whether admission of the *running* version rests on the gate's prerelease
+# reading alone.
+#
+# It reports and nothing else: no refusal, no rewrite, and — deliberately — no
+# suggested replacement range. A synthesized range can be wider than the one it
+# replaces and still look like a fix, so the honest output of a set comparison
+# is the two sets. The tool is also sound to call anywhere: it reads the
+# profile's own resolver when one is present, falls back to Node resolution, and
+# says so plainly when it can read no version at all rather than guessing.
+#
+# Config, all optional:
+#
+#   tool: true                 register the `peer_range_audit` tool
+#   versions: [...]            default version ladder for calls that name none
+#   maxVersions: 200           bound on the tested ladder
+#   maxRequirements: 50        bound on the ranges audited in one call
+#
+# Both bounds truncate loudly: the report says how many were dropped.
+
+- insert:
+    - id: peer-range-audit
+      name: '@argszero/dsh-peer-range-audit'

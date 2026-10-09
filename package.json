@@ -1,0 +1,80 @@
+{
+  "name": "@argszero/dsh-peer-range-audit",
+  "version": "0.1.0",
+  "description": "Audits declared dsh peer ranges against the two readings that decide them: the profile gate's (prereleases participate) and plain semver's (what npm's own resolver does).",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/types/**/*.d.ts",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "cordis",
+    "deepseek-harness",
+    "dsh",
+    "plugin",
+    "peerDependencies",
+    "semver",
+    "prerelease",
+    "includePrerelease",
+    "compatibility",
+    "diagnostic"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/argszero/dsh-peer-range-audit.git"
+  },
+  "homepage": "https://github.com/argszero/dsh-peer-range-audit#readme",
+  "bugs": {
+    "url": "https://github.com/argszero/dsh-peer-range-audit/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "@deepseek-ai/dsh-tools": ">=0.1.7-rc.2 <0.2.0 || >=0.2.0-rc.2 <0.2.1"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.4",
+    "@deepseek-ai/dsh-app-boot": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-llm": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-system-prompt": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-tools": "0.2.0-rc.2",
+    "@types/node": "^24.19.1",
+    "@types/semver": "^7.8.0",
+    "semver": "^7.8.5",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "semver": "^7.8.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "pretest": "tsc",
+    "test": "node --test \"test/*.spec.mjs\"",
+    "test:inject": "node scripts/inject-defects.mjs",
+    "test:probe-lines": "node scripts/probe-lines.mjs",
+    "prepublishOnly": "tsc"
+  },
+  "engines": {
+    "node": "^22.19 || >=24"
+  }
+}
