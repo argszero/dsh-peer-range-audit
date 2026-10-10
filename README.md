@@ -56,7 +56,7 @@ prereleases, and always in one direction.
 ## Install
 
 ```sh
-npm install @argszero/dsh-peer-range-audit@0.1.0
+npm install @argszero/dsh-peer-range-audit@0.1.1
 ```
 
 Then mount it. The package ships a bundle patch

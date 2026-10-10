@@ -1,6 +1,6 @@
 {
   "name": "@argszero/dsh-peer-range-audit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Audits declared dsh peer ranges against the two readings that decide them: the profile gate's (prereleases participate) and plain semver's (what npm's own resolver does).",
   "publishConfig": {
     "access": "public"
